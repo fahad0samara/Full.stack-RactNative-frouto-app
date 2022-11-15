@@ -120,6 +120,35 @@ export const listProducts = [
     type: 3,
     pricePerKg: "£ 25.3",
   },
+  {
+    id: 17,
+    name: "Challah",
+    img: require("../assets/bread1.jpg"),
+    type: 4,
+    pricePerKg: "£ 2",
+  },
+  {
+    id: 18,
+    name: "Rye Bread",
+    img: require("../assets/bread3.jpg"),
+    type: 4,
+    pricePerKg: "£ 0.3",
+  },
+  {
+    id: 19,
+    name: " Sourdough Bread",
+    img: require("../assets/bread4.jpg"),
+    type: 4,
+    pricePerKg: "£ 3",
+  },
+  {
+    id: 20,
+    name: "Pumpkin Bread",
+    img: require("../assets/bread5.jpg"),
+    type: 4,
+    pricePerKg: "£ 0.6",
+  },
+
 ];
 
 export const listCategory = [
@@ -138,5 +167,10 @@ export const listCategory = [
     name: "chicken ",
     image: require("../assets/List3.png"),
   },
- 
+  {
+    id: "4",
+    name: "bread ",
+    image: require("../assets/List4.png"),
+  },
+
 ];

@@ -8,15 +8,19 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import {useLogIN} from "../../ContText";
 import {AntDesign} from "@expo/vector-icons";
+import LoderApp from "../configs/LoderApp";
+import LoderCart from "../configs/LoderCart";
 
 const ProductItem = (props): JSX.Element => {
+  const [loder,setloder]=useState()
   const window = useWindowDimensions();
-/* *|CURSOR_MARCADOR|* */
-  const ITEM_SIZE = /* Calculating the width of a div. */
-  (window.width - 2 * 15 - 15 - 10) / 2;
+  /* *|CURSOR_MARCADOR|* */
+  const ITEM_SIZE =
+    /* Calculating the width of a div. */
+    (window.width - 2 * 15 - 15 - 10) / 2;
   const PADDING_INNER = 8;
   const {addProductToCard} = useLogIN();
   return (
@@ -30,32 +34,33 @@ const ProductItem = (props): JSX.Element => {
         styles.container,
       ]}
     >
-      <Image
-        source={props.img}
-        style={{
+      {
+        // load the image set in the product
+      }
+
+      {props.img ? (
+        <Image
+          source={props.img}
+          style={{
+            width: ITEM_SIZE - 2 * PADDING_INNER,
+            height: (ITEM_SIZE - 2 * PADDING_INNER) * (120 / 144),
+          }}
+        />
+      ) : (
+          <Text style={{ color: "red" }}>No Image</Text>
        
-          width: ITEM_SIZE - 2 * PADDING_INNER,
-          height: (ITEM_SIZE - 2 * PADDING_INNER) * (120 / 144),
-        }}
-       
-      />
+      )}
 
       {
         // if the name is tall small the size
       }
-      {
-        props.name.length > 30 ? (
-          <Text style={styles.name} numberOfLines={1}>
-            {props.name}
-          </Text>
-        ) : (
-            <Text style={styles.name}>{props.name}</Text>
-          )
-    }
-
-
-    
-
+      {props.name.length > 30 ? (
+        <Text style={styles.name} numberOfLines={1}>
+          {props.name}
+        </Text>
+      ) : (
+        <Text style={styles.name}>{props.name}</Text>
+      )}
       <Text style={styles.type}>{props.categoryName}</Text>
       <View style={styles.bottom}>
         <Text style={styles.priceView}>
