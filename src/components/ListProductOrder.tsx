@@ -11,7 +11,8 @@ import { useLogIN } from "../../ContText";
 import {AntDesign} from "@expo/vector-icons";
 
 const ListProductOrder = ({products = []}:any) => {
-  const {addProductToCard, removeProduct} = useLogIN();
+  const { addProductToCard, removeProduct } = useLogIN();
+  
   const renderItem = ({item}:any) => {
     return (
       <View style={styles.item}>

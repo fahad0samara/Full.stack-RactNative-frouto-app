@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#1B1B1B',
+    color: '#fff',
     marginVertical: 18,
   },
 });

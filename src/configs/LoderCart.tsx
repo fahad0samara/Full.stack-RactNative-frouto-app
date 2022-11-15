@@ -41,8 +41,7 @@ export default function LoderCart() {
           borderRadius: 10,
           marginTop: 20,
         }}
-        
-        onPress={() => navigation.navigate("Home")}
+        onPress={() => navigation.navigate("HomeScreen")}
       >
         <Text
           style={{
@@ -53,7 +52,7 @@ export default function LoderCart() {
         >
           Shop Now
         </Text>
-      </TouchableOpacity>   
+      </TouchableOpacity>
     </View>
   );
 }

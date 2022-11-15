@@ -14,9 +14,10 @@ import { useLogIN } from '../../ContText';
 import LoderCart from '../configs/LoderCart';
 import { SPACING } from '../configs/styling';
 import { AntDesign } from '@expo/vector-icons';
-
+import {LogBox} from "react-native";
 
 const sumTotal = (products: any[]) => {
+
   return products.reduce((sum, item) => {
     return (
       sum +
@@ -25,12 +26,13 @@ const sumTotal = (products: any[]) => {
   }, 0);
 };
 
-const OrderScreen = () => {
+const CartScreen = () => {
+   LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
+
   const navigation = useNavigation();
-  const {products} = useLogIN()
+  const {products} = useLogIN();
   const totalPrice = (sumTotal(products) + 2.44).toFixed(2);
   return (
-
     // if the cart empty show you cart empty
 
     products.length === 0 ? (
@@ -90,12 +92,15 @@ const OrderScreen = () => {
           <View style={{paddingHorizontal: 16}}>
             <View style={styles.row}>
               <Text style={styles.text1}>Delivery</Text>
-              <Text style={styles.text1}>$2.44</Text>
+                <Text style={styles.text1}>
+                  £1.50
+              </Text>
             </View>
             <View style={styles.line} />
             <View style={styles.row}>
               <Text style={styles.text2}>TOTAL</Text>
-              <Text style={styles.text2}>${totalPrice}</Text>
+                <Text style={styles.text2}>
+                £{totalPrice}</Text>
             </View>
             <TouchableOpacity style={styles.btnCheckout}>
               <Text style={styles.txtCheckout}>Checkout</Text>
@@ -103,13 +108,11 @@ const OrderScreen = () => {
           </View>
         </View>
       </SafeAreaView>
-      )
+    )
   );
-  
-  
 };
 
-export default OrderScreen;
+export default CartScreen;
 
 const styles = StyleSheet.create({
   line1: {

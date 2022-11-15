@@ -10,12 +10,13 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import {useLogIN} from "../../ContText";
-import {AntDesign} from "@expo/vector-icons";
-import LoderApp from "../configs/LoderApp";
-import LoderCart from "../configs/LoderCart";
+import { AntDesign } from "@expo/vector-icons";
+import { LogBox } from "react-native";
+import Toast from "react-native-simple-toast";
 
-const ProductItem = (props): JSX.Element => {
-  const [loder,setloder]=useState()
+
+const ProductItem = (props: { index?: any; img?: any; name?: any; categoryName?: any; pricePerKg?: any; id?: any; }): JSX.Element => {
+  
   const window = useWindowDimensions();
   /* *|CURSOR_MARCADOR|* */
   const ITEM_SIZE =
@@ -77,8 +78,13 @@ const ProductItem = (props): JSX.Element => {
             alignItems: "center",
           }}
           onPress={() => {
+            //@ts-ignore
             addProductToCard(props);
-            Alert.alert(`Add ${props.name} to card success!`);
+
+            Toast.show(`Add ${props.name} to card success!`);
+            
+
+           
           }}
         >
           <AntDesign name="plus" size={20} color="white" />
@@ -88,8 +94,9 @@ const ProductItem = (props): JSX.Element => {
   );
 };
 
-const GridProducts = ({products = []}) => {
-  const renderItem = ({item, index}) => <ProductItem index={index} {...item} />;
+const GridProducts = ({ products = [] }) => {
+   LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
+  const renderItem = ({item, index}:any) => <ProductItem index={index} {...item} />;
 
   return (
     <FlatList

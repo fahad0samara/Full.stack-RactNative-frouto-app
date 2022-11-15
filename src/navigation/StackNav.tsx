@@ -1,20 +1,19 @@
+import React from "react";
+import {createNativeStackNavigator} from "@react-navigation/native-stack";
+import HomeScreen from "../screens/HomeScreen";
+import SearchScreen from "../screens/SearchScreen";
 
-import React from 'react'
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import HomeScreen from '../screens/HomeScreen';
-import SearchScreen from '../screens/SearchScreen';
-import OrderScreen from '../screens/OrderScreen';
+import TabNav from "./TabNav";
 const Stack = createNativeStackNavigator();
 
-
 const StackNav = () => {
-    return (
-      <Stack.Navigator screenOptions={{headerShown: false}}>
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Search" component={SearchScreen} />
-        <Stack.Screen name="Order" component={OrderScreen} />
-      </Stack.Navigator>
-    );
-}
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name="TabNav" component={TabNav} />
+      <Stack.Screen name="HomeScreen" component={HomeScreen} />
+      <Stack.Screen name="SearchScreen" component={SearchScreen} />
+    </Stack.Navigator>
+  );
+};
 
-export default StackNav
+export default StackNav;

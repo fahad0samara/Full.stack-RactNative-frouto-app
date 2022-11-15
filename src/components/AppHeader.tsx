@@ -6,13 +6,7 @@ import {AntDesign} from "@expo/vector-icons";
 import { SafeAreaView } from 'react-native-safe-area-context';
 const AppHeader = () => {
   const { width, height } = Dimensions.get("window");
-;
 
-
-  
-
-
-  
   const navigation = useNavigation();
   const { products } = useLogIN() 
   const [greeting, setGreeting] = React.useState("");
@@ -69,32 +63,7 @@ const AppHeader = () => {
           </Text>
           <Text style={styles.desc}>What would you buy today?</Text>
         </View>
-        <TouchableOpacity
-          style={{
-            position: "absolute",
-            right: 0,
-            top: 0,
-            backgroundColor: "#7e22ce",
-            width: 40,
-            height: 40,
-            borderRadius: 20,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-          onPress={() => navigation.navigate("Order")}
-        >
-          {
-            // icon for cart
-          }
-
-          <AntDesign name="shoppingcart" size={24} color="white" />
-
-          {products.length > 0 && (
-            <View style={styles.badge}>
-              <Text style={styles.badgeText}>{products.length}</Text>
-            </View>
-          )}
-        </TouchableOpacity>
+   
       </View>
     </SafeAreaView>
   );
@@ -123,21 +92,5 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 25,
   },
-  badge: {
-    position: 'absolute',
-    backgroundColor: 'red',
-    aspectRatio: 1,
-    width: 20,
-    borderRadius: 20,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    left: -6,
-    top: -5,
-  },
-  badgeText: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-  },
+
 });

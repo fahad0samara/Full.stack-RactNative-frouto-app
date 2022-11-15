@@ -25,6 +25,7 @@ const HomeScreen = () => {
   const navigation = useNavigation();
 
   React.useEffect(() => {
+    //@ts-ignore
     fetchProducts(type);
   }, [type, fetchProducts]);
 
@@ -34,11 +35,10 @@ const HomeScreen = () => {
         <AppHeader />
         <TouchableOpacity
           style={styles.searchContainer}
-          onPress={() => navigation.navigate('Search')}>
+          onPress={() => navigation.navigate("SearchScreen")}
+        >
           <AntDesign name="search1" size={24} color="black" />
-          
-          
-     
+
           <Text style={styles.searchText}>
             Search for products, brands and more..
           </Text>
@@ -53,10 +53,13 @@ const HomeScreen = () => {
         )}
         {isLoading ? (
           <View style={styles.loading}>
-       <LoderApp/>
+            <LoderApp />
           </View>
         ) : (
-          <ListBestSeller products={products} />
+          <ListBestSeller
+            //@ts-ignore
+            products={products}
+          />
         )}
       </ScrollView>
     </SafeAreaView>

@@ -17,18 +17,18 @@ const ContextLog = createContext(
     removeProduct: (product: { id: any }) => void;
   }
 );
-const LogCheck = ({ children }) => {
-   const [products, setProducts] = React.useState([]);
+const LogCheck = ({ children }:any) => {
+   const [products, setProducts] = React.useState<any>([]);
   const [log, setLog] = useState(false);
   const [profile, setProfile] = useState({});
   const [loading, setLoading] = useState(true);
 
-     const addProductToCard = product => {
+     const addProductToCard = (product: { id: any; }) => {
        // check product
-       const existedProduct = products.find(item => item.id === product.id);
+       const existedProduct = products.find((item: { id: any; }) => item.id === product.id);
        if (existedProduct) {
          setProducts([
-           ...products.filter(item => item.id !== product.id),
+           ...products.filter((item: { id: any; }) => item.id !== product.id),
            {...existedProduct, quantity: (existedProduct.quantity || 0) + 1},
          ]);
        } else {
@@ -36,16 +36,16 @@ const LogCheck = ({ children }) => {
        }
      };
 
-     const removeProduct = product => {
-       const existedProduct = products.find(item => item.id === product.id);
+     const removeProduct = (product: { id: any; }) => {
+       const existedProduct = products.find((item: { id: any; }) => item.id === product.id);
        if (existedProduct && existedProduct.quantity === 1) {
          return setProducts([
-           ...products.filter(item => item.id !== product.id),
+           ...products.filter((item: { id: any; }) => item.id !== product.id),
          ]);
        }
        if (existedProduct) {
          setProducts([
-           ...products.filter(item => item.id !== product.id),
+           ...products.filter((item: { id: any; }) => item.id !== product.id),
            {...existedProduct, quantity: (existedProduct.quantity || 0) - 1},
          ]);
        }
@@ -74,7 +74,7 @@ const LogCheck = ({ children }) => {
         }
       } catch (error) {
         console.log(error);
-        console.log(error.response);
+        console.log(error);
         setLog(false);
         setLoading(false);
       }
@@ -97,7 +97,7 @@ const LogCheck = ({ children }) => {
         loading,
         setLoading,
 
-        products: products.sort((p1, p2) => p1.name.localeCompare(p2.name)),
+        products: products.sort((p1: { name: string; }, p2: { name: any; }) => p1.name.localeCompare(p2.name)),
         addProductToCard,
         removeProduct,
       }}

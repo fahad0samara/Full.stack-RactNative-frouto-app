@@ -1,8 +1,9 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import GridProducts from './GridProducts';
-
-const ListProductSearch = ({products = [], onCancelSearch}:any) => {
+import {LogBox} from "react-native";
+const ListProductSearch = ({ products = [], onCancelSearch }: any) => {
+  LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
   return (
     <View>
       <View style={styles.resultContainer}>
@@ -57,8 +58,11 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   foundText: {
-    fontSize: 11,
-    color: '#1B1B1B',
+    fontSize: 12,
+    fontWeight: '600',
+   
+
+    color: '#fff',
   },
   resultContainer: {
     flexDirection: 'row',

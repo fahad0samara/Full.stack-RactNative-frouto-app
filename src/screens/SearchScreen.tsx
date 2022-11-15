@@ -24,14 +24,17 @@ const SearchScreen = () => {
 
   const resetSearch = () => {
     setSearchTerm("");
+    //@ts-ignore
     resetList();
   };
 
-  const onChangeText = text => {
+  const onChangeText = (text: any[] | React.SetStateAction<string>) => {
     if (text.length === 0) {
       resetSearch();
     } else {
+      //@ts-ignore
       setSearchTerm(text);
+      //@ts-ignore
       fetchProductList(0, text);
     }
   };
@@ -50,7 +53,6 @@ const SearchScreen = () => {
           alignItems: "center",
           justifyContent: "center",
           marginTop: SPACING * 3,
-         
         }}
       >
         <TouchableOpacity
@@ -102,19 +104,13 @@ const SearchScreen = () => {
           {
             // if not searching show image and delet after search
           }
-        
-       
-
-
-
-
-    
 
           {isLoading ? (
             <View>
               <ActivityIndicator />
             </View>
-          ) : products.length > 0 ? (
+          ) : //@ts-ignore
+          products.length > 0 ? (
             <ListProductSearch
               onCancelSearch={resetSearch}
               products={products}
