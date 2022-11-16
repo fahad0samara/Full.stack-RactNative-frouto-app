@@ -16,6 +16,7 @@ import {useNavigation} from "@react-navigation/native";
 import ListProductSearch from "../components/ListProductSearch";
 import { useProduct } from "../hooks/useProduct";
 import {AntDesign} from "@expo/vector-icons";
+import TabViewExample from "../components/TabViewScreen/TabViewExample";
 const SearchScreen = () => {
   const [products, isLoading, fetchProductList, resetList] = useProduct();
   const [searchTerm, setSearchTerm] = React.useState("");
@@ -141,6 +142,7 @@ const SearchScreen = () => {
               )}
             </>
           )}
+          <TabViewExample />
         </ScrollView>
       </View>
     </SafeAreaView>

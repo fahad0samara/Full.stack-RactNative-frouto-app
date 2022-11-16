@@ -8,15 +8,20 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, {useState} from "react";
 import {useLogIN} from "../../ContText";
-import { AntDesign } from "@expo/vector-icons";
-import { LogBox } from "react-native";
+import {AntDesign} from "@expo/vector-icons";
+import {LogBox} from "react-native";
 import Toast from "react-native-simple-toast";
 
-
-const ProductItem = (props: { index?: any; img?: any; name?: any; categoryName?: any; pricePerKg?: any; id?: any; }): JSX.Element => {
-  
+const ProductItem = (props: {
+  index?: any;
+  img?: any;
+  name?: any;
+  categoryName?: any;
+  pricePerKg?: any;
+  id?: any;
+}): JSX.Element => {
   const window = useWindowDimensions();
   /* *|CURSOR_MARCADOR|* */
   const ITEM_SIZE =
@@ -48,8 +53,7 @@ const ProductItem = (props: { index?: any; img?: any; name?: any; categoryName?:
           }}
         />
       ) : (
-          <Text style={{ color: "red" }}>No Image</Text>
-       
+        <Text style={{color: "red"}}>No Image</Text>
       )}
 
       {
@@ -82,9 +86,6 @@ const ProductItem = (props: { index?: any; img?: any; name?: any; categoryName?:
             addProductToCard(props);
 
             Toast.show(`Add ${props.name} to card success!`);
-            
-
-           
           }}
         >
           <AntDesign name="plus" size={20} color="white" />
@@ -94,9 +95,11 @@ const ProductItem = (props: { index?: any; img?: any; name?: any; categoryName?:
   );
 };
 
-const GridProducts = ({ products = [] }) => {
-   LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
-  const renderItem = ({item, index}:any) => <ProductItem index={index} {...item} />;
+const GridProducts = ({products = []}) => {
+  LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
+  const renderItem = ({item, index}: any) => (
+    <ProductItem index={index} {...item} />
+  );
 
   return (
     <FlatList

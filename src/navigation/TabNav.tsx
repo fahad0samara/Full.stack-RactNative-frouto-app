@@ -7,8 +7,9 @@ import {Image, ScrollView, Text} from "react-native";
 import {LinearGradient} from "expo-linear-gradient";
 import HomeScreen from "../screens/HomeScreen";
 import CartScreen from "../screens/CartScreen";
-import Profile from "../screens/Profile";
+
 import {useLogIN} from "../../ContText";
+import Settings from "../screens/Settings";
 
 const BottomTab = ({type, color, size = 24, isFocused, index}) => {
   const {products} = useLogIN();
@@ -163,15 +164,15 @@ const TabNavigator = () => {
       />
 
       <Tab.Screen
-        name="Profile"
+        name="Settings"
         options={{
-          tabBarLabel: "Profile",
+          tabBarLabel: "Settings",
           tabBarLabelStyle: {
             fontSize: 12,
             color: "#fff",
           },
         }}
-        component={Profile}
+        component={Settings}
       />
     </Tab.Navigator>
   );
