@@ -76,6 +76,7 @@ const Settings = () => {
           {
             // phone profile
           }
+          
         </View>
       </View>
 

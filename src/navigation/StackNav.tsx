@@ -9,8 +9,9 @@ const Stack = createNativeStackNavigator();
 
 const StackNav = () => {
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Register" component={Register} />
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Register" component={Register} />
+     
       <Stack.Screen name="TabNav" component={TabNav} />
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="SearchScreen" component={SearchScreen} />
