@@ -1,7 +1,7 @@
 import {NavigationContainer} from "@react-navigation/native";
 import React from "react";
 
-import "./mocks/server";
+
 import LogCheck from "./ContText";
 import StackNav from "./src/navigation/StackNav";
 

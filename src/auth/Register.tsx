@@ -32,36 +32,29 @@ const Sing = ({navigation}: any) => {
   const onSignUp = () => {
     setLoading(true);
     axios
-      .post("api/user/register", {
+      .post("http://10.0.2.2:2020/auth/register", {
         name: name,
         email: email,
         password: password,
       })
       .then(res => {
-        console.log('====================================');
+        console.log("====================================");
         console.log(
           "🚀 ~ file: Register.tsx ~ line 64 ~ onSignUp ~ res",
           res.data
         );
-        console.log('====================================');
+        console.log("====================================");
         setLoading(false);
         navigation.navigate("TabNav");
       })
       .catch(err => {
         setLoading(false);
+        console.log("====================================");
         console.log(
-          "🚀 ~ file: Register.tsx ~ line 85 ~ onSignUp ~ err",
+          "🚀 ~ file: Register.tsx ~ line 64 ~ onSignUp ~ err",
           err.response.data
-      
         );
-        console.log(
-          "🚀 ~ file: Register.tsx ~ line 85 ~ onSignUp ~ err",
-          err.response.data.message
-      
-      
-        );
-        
-   
+ 
       });
   };
   

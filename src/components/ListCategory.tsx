@@ -27,7 +27,11 @@ const ListCategory = ({categories = [], onChange, currentType}:any) => {
               borderRadius: 12.5,
               
             }}
-            source={category.image} />
+            source={
+              {
+                uri:category.image,
+             }
+            } />
           <Text
             style={[
               styles.name,

@@ -10,7 +10,7 @@ export const useProduct = () => {
       setLoading(true);
       // change api to search with category and search term
       const resp = await fetch(
-        `/api/product?type=${type || 0}&s=${searchTerm || ''}`,
+        `http://10.0.2.2:2020/api/product?type=${type}&searchTerm=${searchTerm}`,
       );
       const data = await resp.json();
       setListProducts(data || []);

@@ -46,7 +46,7 @@ const ProductItem = (props: {
 
       {props.img ? (
         <Image
-          source={props.img}
+          source={{uri: props.img}}
           style={{
             width: ITEM_SIZE - 2 * PADDING_INNER,
             height: (ITEM_SIZE - 2 * PADDING_INNER) * (120 / 144),
