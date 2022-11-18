@@ -1,22 +1,18 @@
 /* Importing the createServer function from the miragejs library. */
-import {createServer} from "miragejs";
+import {createServer, Model} from "miragejs";
 
 import { listCategory, listProducts } from "./Data";
 
 
-/* Checking if the server is already running, if it is, it will shut it down. */
-
-if (window.server) {
-  window.server.shutdown();
-
-  // if there is internat and send message internat
-}
-
-// update backend
-/* Creating a server that will return the list of products. */
 window.server = createServer({
   routes() {
-    /* Mapping the listProducts array to a new array with the categoryName property added. */
+    this.namespace = "api";
+
+
+
+    
+
+
     this.get("/api/product", (schema, req) => {
       return listProducts
         .map(item => ({
@@ -38,6 +34,14 @@ window.server = createServer({
         );
     });
 
+
+         
+  
+   
+              
+       
+
+   /* Returning the list of categories. */
     this.get("/api/category", () => {
       return listCategory;
     });

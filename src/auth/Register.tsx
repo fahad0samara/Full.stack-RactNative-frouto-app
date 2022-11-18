@@ -1,496 +1,316 @@
-import * as React from "react";
-import {StackActions} from "@react-navigation/native";
+import React from "react";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import axios from "axios";
 import {
   StyleSheet,
+  Dimensions,
   View,
-  Text,
-  Image,
-  TextInput,
-  TouchableOpacity,
   ImageBackground,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  ActivityIndicator,
+  KeyboardAvoidingView,
 } from "react-native";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import axios from "axios";
-import * as Progress from "react-native-progress";
-import {useNavigation} from "@react-navigation/native";
-import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Register = () => {
+import * as Animatable from "react-native-animatable";
+import { FontAwesome } from '@expo/vector-icons';
+
+
+const Sing = ({navigation}: any) => {
   const [email, setemail] = React.useState("");
   const [name, setname] = React.useState("");
-  const [password, setpassword] = React.useState("");
+  const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState("");
-  const [loading, setLoading] = React.useState();
+  const [isValidEmail, setIsValidEmail] = React.useState(false);
+  const [PhoneNumber, setPhoneNumber] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
+  const [isValidUserName, setisValidUserName] = React.useState(false);
 
-  const navigation = useNavigation();
-
-  // Log IN
-  const register = async () => {
-    //    "https://firstauth.azurewebsites.net/auth/login",
-    if (
-      // if the email not valid
-      !email ||
-      !password ||
-      email === "" ||
-      password === ""
-    ) {
-      setError("Please fill in all fields");
-    } else {
-      setLoading(true);
-
-      setLoading(true);
-      const user = {name, email, password};
-      try {
-        const response = await axios.post(
-          "https://firstauth.azurewebsites.net/auth/register",
-          user
-          );
-          
+  const [secureTextEntry, setsecureTextEntry] = React.useState(false);
+  // register for user
+  const onSignUp = () => {
+    setLoading(true);
+    axios
+      .post("api/user/register", {
+        name: name,
+        email: email,
+        password: password,
+      })
+      .then(res => {
+        console.log('====================================');
+        console.log(
+          "🚀 ~ file: Register.tsx ~ line 64 ~ onSignUp ~ res",
+          res.data
+        );
+        console.log('====================================');
+        setLoading(false);
+        navigation.navigate("TabNav");
+      })
+      .catch(err => {
+        setLoading(false);
+        console.log(
+          "🚀 ~ file: Register.tsx ~ line 85 ~ onSignUp ~ err",
+          err.response.data
       
-        const SingIN = await axios.post(
-          "https://firstauth.azurewebsites.net/auth/login",
-          {
-            email,
-            password,
-          }
         );
-        navigation.dispatch(
-          StackActions.replace("UplodImage", {
-            token: SingIN.data.token,
-          })
+        console.log(
+          "🚀 ~ file: Register.tsx ~ line 85 ~ onSignUp ~ err",
+          err.response.data.message
+      
+      
         );
-        console.log("====================================");
-        console.log("ttttttt");
-        console.log("====================================");
-        console.log(response.data);
-
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-        console.log(error);
-        setError(error.response.data.message);
-        console.log(error.response.data);
-
-        console.log(error.response.data.message, "2");
-      }
-    }
+        
+   
+      });
   };
+  
+
+
+
+  
+
+ 
+
+
 
   return (
-    // loading
-    <>
-      {loading ? (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "#fff",
-          }}
+    <KeyboardAvoidingView behavior="height" style={styles.container}>
+      <Animatable.View animation="fadeInUpBig" style={styles.container}>
+        <Animatable.View
+          style={styles.header}
+          animation="pulse"
+          iterationCount="infinite"
+          direction="alternate"
         >
-          <Progress.Circle
-            size={100}
-            indeterminate={true}
-            color="#745f9a"
-            borderWidth={0}
-            thickness={
-              4 // The thickness of the circle
-            }
-          />
+          <ImageBackground
+            style={styles.background}
+            source={require("../../assets/fruit4.jpg")}
+          ></ImageBackground>
+        </Animatable.View>
 
-          <Text
-            style={{
-              fontSize: 40,
-              marginTop: 4,
-              fontWeight: "600",
-
-              color: "#745f9a",
-              textAlign: "left",
-            }}
+        <Animatable.View style={styles.footer} animation="fadeInUpBig">
+          <Animatable.View
+            animation="pulse"
+            iterationCount="infinite"
+            direction="alternate"
           >
-            Loading...
-          </Text>
-        </View>
-      ) : (
-        <View style={styles.loginView}>
-          <View style={styles.rectangleView} />
-
-         
-
-          <Text style={styles.salutStevenText}>
-            <Text style={styles.welcome}>
-              Welcome to{"\n"}
-              {"\n"}
-            </Text>
-            <Text style={styles.Back}>our blog</Text>
-          </Text>
-          {
-            // TextInput for email and password
-          }
-
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-              marginTop: 10,
-            }}
-          >
-            <TextInput
-              style={{
-                position: "absolute",
-                top: 400,
-                paddingLeft: -10,
-                left: 30,
-
-                paddingLeft: 40,
-                width: 300,
-                height: 50,
-                borderRadius: 25,
-                backgroundColor: "#ccbee3",
-
-                borderStyle: "dashed",
-                borderColor: "#000",
-                borderWidth: 2,
-                overflow: "hidden",
-              }}
-              placeholder="
-                              your Name"
-              onChangeText={text => setname(text)}
-              value={name}
-              keyboardType="email-address"
-            />
-            {
-              // name
-            }
-
-            <Ionicons
-              name="person"
-              size={26}
-              style={{
-                position: "absolute",
-                top: 410,
-                left: 40,
-              }}
-              color={"#fff"}
-            />
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-              marginTop: 60,
-            }}
-          >
-            <TextInput
-              style={{
-                position: "absolute",
-                top: 400,
-
-                left: 30,
-
-                elevation: 5,
-                paddingLeft: 40,
-                width: 300,
-                height: 50,
-                borderRadius: 25,
-                backgroundColor: "#ccbee3",
-
-                borderStyle: "dashed",
-                borderColor: "#000",
-                borderWidth: 2,
-                overflow: "hidden",
-              }}
-              placeholder="Password"
-              onChangeText={text => setemail(text)}
-              value={email}
-              secureTextEntry={true}
-              keyboardType="email-address"
-            />
-            <Ionicons
-              name="mail"
-              size={26}
-              style={{
-                position: "absolute",
-                top: 410,
-                left: 40,
-              }}
-              color={"#fff"}
-            />
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-              marginTop: 15,
-            }}
-          >
-            <TextInput
-              style={{
-                position: "absolute",
-                top: 450,
-                paddingLeft: -10,
-                left: 30,
-
-                paddingLeft: 40,
-                width: 300,
-                height: 50,
-                borderRadius: 25,
-                backgroundColor: "#ccbee3",
-
-                borderStyle: "dashed",
-                borderColor: "#000",
-                borderWidth: 2,
-                overflow: "hidden",
-              }}
-              placeholder="password"
-              onChangeText={text => setpassword(text)}
-              value={password}
-              autoComplete="password"
-            />
-            <Ionicons
-              name="lock-closed"
-              size={26}
-              style={{
-                position: "absolute",
-                top: 460,
-                left: 40,
-              }}
-              color={"#fff"}
-            />
-          </View>
-          <TouchableOpacity
-            onPress={() => register()}
-            style={{
-              position: "absolute",
-              shadowColor: "#000",
-              shadowOffset: {
-                width: 4,
-                height: 6,
-              },
-
-              shadowOpacity: 6,
-              shadowRadius: 2,
-              elevation: 8,
-
-              top: 600,
-
-              marginHorizontal: "15%",
-              borderRadius: 38,
-              backgroundColor: "#ccbee3",
-              borderStyle: "solid",
-              borderColor: "#fff",
-              borderWidth: 2,
-              overflow: "hidden",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-              width: 250,
-              height: 50,
-            }}
-          >
-            <Text
-              style={{
-                color: "#fff",
-                fontSize: 20,
-                fontWeight: "bold",
-              }}
-            >
-              Register
-            </Text>
-          </TouchableOpacity>
-          <View
-            style={{
-              position: "absolute",
-              top: 660,
-              marginHorizontal: "25%",
-
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Text
-              style={{
-                color: "#000",
-                fontSize: 15,
-              }}
-            >
-              Already have an account?
-            </Text>
-            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-              <Text
-                style={{
-                  color: "#000",
-                  fontSize: 15,
-                  fontWeight: "bold",
-                }}
-              >
-                Login
-              </Text>
-            </TouchableOpacity>
-          </View>
-          {
-            // Error message
-          }
-          {error ? (
-            <View
-              style={{
-                position: "absolute",
-                top: 700,
-                marginHorizontal: "15%",
-
-                alignItems: "center",
-
-                justifyContent: "center",
-              }}
-            >
+            {error ? (
               <Text
                 style={{
                   color: "red",
-                  fontSize: 15,
+                  textAlign: "center",
+                  marginTop: 20,
+                  fontSize: 20,
                 }}
               >
                 {error}
               </Text>
-            </View>
-          ) : null}
-        </View>
-      )}
-    </>
+            ) : null}
+          </Animatable.View>
+          <Text style={styles.titleText}> Sign Up </Text>
+          <View style={[styles.action, {marginTop: 20}]}>
+            <FontAwesome
+              //  name="user-o"
+              name="user"
+              color="#EAB308"
+              size={20}
+            />
+            {
+              // this is the name input and the name is required
+              //
+            }
+            <TextInput
+              placeholder="Your Name"
+              style={styles.textInput}
+              autoCapitalize="none"
+              onChangeText={text => {
+                setname(text);
+                if (text.length >= 4) {
+                  setisValidUserName(true);
+                } else {
+                  setisValidUserName(false);
+                }
+              }}
+              placeholderTextColor="#fff"
+            />
+
+            {isValidUserName ? (
+              <Animatable.View animation="bounceIn">
+                <FontAwesome name="check-circle" color="green" size={20} />
+              </Animatable.View>
+            ) : null}
+          </View>
+          <View style={[styles.action, {marginTop: 20}]}>
+            <FontAwesome
+              //  name="user-o"
+              name="envelope"
+              color="#EAB308"
+              size={20}
+            />
+            {
+              // this is the email input and the email is required
+            }
+
+            <TextInput
+              placeholder="Your Email"
+              style={styles.textInput}
+              value={email}
+              autoCapitalize="none"
+              onChangeText={text => {
+                setemail(text);
+                // this is the email validation
+                if (text.includes("@") && text.includes(".")) {
+                  setIsValidEmail(true);
+                } else {
+                  setIsValidEmail(false);
+                }
+              }}
+              placeholderTextColor="#fff"
+            />
+
+            {isValidEmail ? (
+              <Animatable.View animation="bounceIn">
+                <FontAwesome name="check-circle" color="green" size={20} />
+              </Animatable.View>
+            ) : null}
+          </View>
+
+          <View style={[styles.action, {marginTop: 20}]}>
+            <FontAwesome name="lock" color="#EAB308" size={20} />
+            {
+              // this is the password input and the password is required
+            }
+
+            <TextInput
+              placeholder="Your Password"
+              style={styles.textInput}
+              value={password}
+              autoCapitalize="none"
+              onChangeText={text => {
+                setPassword(text);
+              }}
+              secureTextEntry={secureTextEntry ? true : false}
+              placeholderTextColor="#fff"
+            />
+
+            <TouchableOpacity
+              onPress={() => setsecureTextEntry(!secureTextEntry)}
+            >
+              {secureTextEntry ? (
+                <FontAwesome name="eye-slash" color="grey" size={20} />
+              ) : (
+                <FontAwesome name="eye" color="grey" size={20} />
+              )}
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.button}>
+            <TouchableOpacity
+              style={styles.button_signUp}
+              onPress={() => onSignUp()}
+            >
+              {loading ? (
+                <ActivityIndicator size="small" color="#fff" />
+              ) : (
+                <Text style={styles.btnTextSignUp}>Sign Up</Text>
+              )}
+            </TouchableOpacity>
+          </View>
+          <View>
+            <Text
+              style={{
+                color: "#fff",
+                textAlign: "center",
+                marginTop: 20,
+                fontSize: 16,
+              }}
+            >
+              Already have an account?
+            </Text>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("LogIN")}
+              style={{
+                marginTop: 10,
+                backgroundColor: "#EAB308",
+                padding: 10,
+                borderRadius: 10,
+                width: 150,
+                alignSelf: "center",
+              }}
+            >
+              <Text style={{color: "#fff", textAlign: "center", fontSize: 16}}>
+                Login
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </Animatable.View>
+      </Animatable.View>
+    </KeyboardAvoidingView>
   );
 };
+const image_width = Dimensions.get("window").width;
+const image_height = Dimensions.get("window").height;
 
 const styles = StyleSheet.create({
-  rectangleView: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    borderRadius: 45,
-    backgroundColor: "#fff",
-    shadowColor: "rgba(0, 0, 0, 0.3)",
-    shadowOffset: {
-      width: 1,
-      height: 4,
-    },
-    shadowRadius: 8,
-    elevation: 8,
-    shadowOpacity: 1,
-    width: 375,
-    height: 812,
+  container: {
+    flex: 1,
   },
-  emailText: {
-    position: "absolute",
-    top: 442,
-    left: 62,
-    fontSize: 14,
-
-    color: "#ccbee3",
-    textAlign: "left",
+  header: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  motDePasse: {
-    position: "absolute",
-    top: 540,
-    left: 62,
-    fontSize: 14,
-
-    color: "#ccbee3",
-    textAlign: "left",
+  footer: {
+    flex: 1,
+    backgroundColor: "#000",
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+    alignItems: "center",
   },
-  vectorIcon: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: 400,
-    height: 397,
+  background: {
+    flex: 1,
+    width: image_width,
+    height: image_height / 2,
   },
-  rectangleIcon: {
-    position: "absolute",
-    top: -6,
-    left: 232.79,
-    width: 492.58,
-    height: 485.1,
-    display: "none",
-  },
-  rectangleIcon1: {
-    position: "absolute",
-    top: 14.86,
-    left: 68.1,
-    width: 419.69,
-    height: 443.09,
-  },
-
-  salutText: {
-    marginBlockStart: 0,
-    marginBlockEnd: 0,
-  },
-  Back: {
-    margin: 0,
-  },
-  salutStevenText: {
-    position: "absolute",
-    top: 155,
-    left: 52,
+  titleText: {
+    alignContent: "center",
+    alignItems: "center",
+    color: "black",
+    fontWeight: "bold",
     fontSize: 30,
-
-    color: "#fff",
-    textAlign: "left",
   },
-  rectangleView1: {
-    position: "absolute",
-    top: 677,
-    left: 62,
-    borderRadius: 38,
-    shadowColor: "#b9abd2",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowRadius: 30,
-    elevation: 30,
-    shadowOpacity: 1,
-    width: 270,
-    height: 55,
+  action: {
+    alignItems: "center",
+    flexDirection: "row",
+    marginTop: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#EAB308",
+    paddingBottom: 5,
   },
-  sinscrireText: {
-    position: "absolute",
-    top: 694,
-    left: 159,
+  textInput: {
+    flex: 1,
+    paddingLeft: 10,
+    color: "#EAB308",
+  },
+  button: {
+    alignItems: "center",
+    marginTop: 30,
+  },
+  button_signUp: {
+    backgroundColor: "#EAB308",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 50,
+    width: image_width - 50,
+    height: 50,
+  },
+  btnTextSignUp: {
     fontSize: 18,
-    fontWeight: "600",
-
-    color: "#fff",
-    textAlign: "left",
-  },
-
-  lineView1: {
-    position: "absolute",
-    top: 499.5,
-    left: 61.5,
-    borderStyle: "solid",
-    borderColor: "#ccbee3",
-    borderTopWidth: 1,
-    width: 271,
-    height: 1,
-  },
-  icons8SignMail1: {
-    position: "absolute",
-    top: 468,
-    left: 62,
-    width: 24,
-    height: 24,
-    overflow: "hidden",
-  },
-  icons8Key1: {
-    position: "absolute",
-    top: 566,
-    left: 60,
-    width: 24,
-    height: 24,
-    overflow: "hidden",
+    color: "white",
+    fontWeight: "bold",
   },
 });
-
-export default Register;
+export default Sing;
