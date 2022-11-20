@@ -11,10 +11,12 @@ import {
 } from "react-native";
 import React from "react";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
+import { useLogIN } from "../../../ContText";
 
 const {width} = Dimensions.get("window");
 const {height} = Dimensions.get("window");
 const Profile = () => {
+  const { setProfile } = useLogIN();
   return (
     // profile secern
     <KeyboardAwareScrollView

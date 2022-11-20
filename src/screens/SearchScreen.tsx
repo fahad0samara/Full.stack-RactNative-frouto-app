@@ -142,7 +142,7 @@ const SearchScreen = () => {
               )}
             </>
           )}
-          <TabViewExample />
+       
         </ScrollView>
       </View>
     </SafeAreaView>

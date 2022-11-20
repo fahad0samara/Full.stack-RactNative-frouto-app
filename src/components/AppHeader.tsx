@@ -5,6 +5,7 @@ import {useLogIN} from "../../ContText";
 import {AntDesign} from "@expo/vector-icons";
 import { SafeAreaView } from 'react-native-safe-area-context';
 const AppHeader = () => {
+  const {setLog, profile} = useLogIN();
   const { width, height } = Dimensions.get("window");
 
   const navigation = useNavigation();
@@ -27,12 +28,11 @@ const AppHeader = () => {
   return (
     <SafeAreaView>
       <View style={styles.container}>
-      
-        <Image
+        {/* <Image
           // her the image the come from the backend
           source={require("../../assets/fruit1.jpg")}
           style={styles.avatar}
-        />
+        /> */}
 
         <View style={styles.groupText}>
           <Text>
@@ -57,13 +57,12 @@ const AppHeader = () => {
                   fontWeight: "bold",
                 }}
               >
-                fahad
+                {profile.name}
               </Text>
             </Text>
           </Text>
           <Text style={styles.desc}>What would you buy today?</Text>
         </View>
-   
       </View>
     </SafeAreaView>
   );

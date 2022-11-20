@@ -21,7 +21,7 @@ const LogCheck = ({ children }:any) => {
    const [products, setProducts] = React.useState<any>([]);
   const [log, setLog] = useState(false);
   const [profile, setProfile] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
      const addProductToCard = (product: { id: any; }) => {
        // check product
@@ -51,41 +51,41 @@ const LogCheck = ({ children }:any) => {
        }
      };
 
-  const checkLog = async () => {
-    setLoading(true);
-    const token = await AsyncStorage.getItem("token");
-    if (token !== null) {
-      try {
-        const response = await axios.get(
-          "https://firstauth.azurewebsites.net/auth/profile",
-          {
-            headers: {
-              Authorization: `JWT ${token}`,
-            },
-          }
-        );
-        if (response.data.success) {
-          setLoading(false);
-          setLog(true);
-          setProfile(response.data.mango);
-        } else {
-          setProfile({});
-          setLoading(false);
-        }
-      } catch (error) {
-        console.log(error);
-        console.log(error);
-        setLog(false);
-        setLoading(false);
-      }
-    } else {
-      setLoading(false);
-    }
-  };
+  // const checkLog = async () => {
+  //   setLoading(true);
+  //   const token = await AsyncStorage.getItem("token");
+  //   if (token !== null) {
+  //     try {
+  //       const response = await axios.get(
+  //         "https://firstauth.azurewebsites.net/auth/profile",
+  //         {
+  //           headers: {
+  //             Authorization: `JWT ${token}`,
+  //           },
+  //         }
+  //       );
+  //       if (response.data.success) {
+  //         setLoading(false);
+  //         setLog(true);
+  //         setProfile(response.data.mango);
+  //       } else {
+  //         setProfile({});
+  //         setLoading(false);
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+  //       console.log(error);
+  //       setLog(false);
+  //       setLoading(false);
+  //     }
+  //   } else {
+  //     setLoading(false);
+  //   }
+  // };
 
-  React.useEffect(() => {
-    checkLog();
-  }, []);
+  // React.useEffect(() => {
+  //   checkLog();
+  // }, []);
 
   return (
     <ContextLog.Provider

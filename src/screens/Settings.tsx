@@ -2,8 +2,10 @@
 import { View, Text, SafeAreaView, Dimensions, Image } from 'react-native'
 import React from 'react'
 import TabViewExample from '../components/TabViewScreen/TabViewExample';
+import { useLogIN } from '../../ContText';
 
 const Settings = () => {
+  const {profile} = useLogIN();
   const {width} = Dimensions.get("window");
   const {height} = Dimensions.get("window");
   return (
@@ -36,7 +38,7 @@ const Settings = () => {
             marginTop: height / 6,
           }}
         >
-          <Image
+          {/* <Image
             source={require("../../assets/fruit6.jpg")}
             style={{
               width: 100,
@@ -47,7 +49,7 @@ const Settings = () => {
               borderColor: "#fff",
             }}
             resizeMode="contain"
-          />
+          /> */}
           {
             // name profile
           }
@@ -59,7 +61,7 @@ const Settings = () => {
               marginTop: 10,
             }}
           >
-            John Doe
+            {profile.name}
           </Text>
           {
             // email profile
@@ -71,7 +73,7 @@ const Settings = () => {
               marginTop: 5,
             }}
           >
-            00000
+            {profile.email}
           </Text>
           {
             // phone profile

@@ -4,22 +4,33 @@ import React from "react";
 
 import LogCheck from "./ContText";
 import StackNav from "./src/navigation/StackNav";
+import Splash from "./src/configs/Splash"
 
 // create app context
 
-const AppContext = React.createContext(null);
 
-export const useAppContext = () => {
-  return React.useContext(AppContext);
-};
 
 function App() {
+  const [hideSplashScreen, setHideSplashScreen] = React.useState(false);
+    const SplashScreen = () => {
+      return <Splash/>
+        
+        
+    };
+    React.useEffect(() => {
+      setTimeout(() => {
+        setHideSplashScreen(true);
+      }, 5000);
+    }, []);
   return (
-    <LogCheck>
-      <NavigationContainer>
-        <StackNav />
-      </NavigationContainer>
-    </LogCheck>
+    <>
+      <LogCheck>
+        <NavigationContainer>
+          {hideSplashScreen ? <StackNav /> : <SplashScreen />}
+          
+        </NavigationContainer>
+      </LogCheck>
+    </>
   );
 }
 

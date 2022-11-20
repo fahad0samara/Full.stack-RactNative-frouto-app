@@ -16,7 +16,10 @@ const ListProductOrder = ({products = []}:any) => {
   const renderItem = ({item}:any) => {
     return (
       <View style={styles.item}>
-        <Image style={styles.img} source={item.img} />
+        <Image style={styles.img} source={{
+          uri: item.img
+         
+        }} />
         <View style={styles.itemBody}>
           <View style={styles.textHeader}>
             <Text style={styles.name}>{item.name}</Text>

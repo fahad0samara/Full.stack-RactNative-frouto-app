@@ -1,5 +1,5 @@
 import React from "react";
-
+import axios from "axios";
 import {
   StyleSheet,
   Dimensions,
@@ -11,219 +11,180 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
 } from "react-native";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {StackActions} from "@react-navigation/native";
 import * as Animatable from "react-native-animatable";
-import { LinearGradient } from "expo-linear-gradient";
-import { FontAwesome, Feather } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import {LinearGradient} from "expo-linear-gradient";
+import {FontAwesome, Feather} from "@expo/vector-icons";
+import {useNavigation} from "@react-navigation/native";
+import ImgRegister from "../configs/ImgRegister";
+import {useLogIN} from "../../ContText";
+import LoderApp from "../configs/LoderApp";
+import Splash from "../configs/Splash";
 
-
-const LogIN = ({ }) => {
+const LogIN = ({}) => {
+  const {setLog, setProfile} = useLogIN();
   const navigation = useNavigation();
   const [email, setemail] = React.useState("");
-  const [name, setname] = React.useState("");
+
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState("");
-  const [isValidEmail, setIsValidEmail] = React.useState(false);
-  const [PhoneNumber, setPhoneNumber] = React.useState("");
+
   const [loading, setLoading] = React.useState(false);
-  const [user, setUser] = React.useState(null);
-  const [isValidUserName, setisValidUserName] = React.useState(false);
-  const [isValidPhoneNumber, setisValidPhoneNumber] = React.useState(false);
+
   const [secureTextEntry, setsecureTextEntry] = React.useState(false);
 
-
-
-    const handleEmailChange = (val) => {
-        if (val.trim().length >= 4) {
-            setIsValidEmail(true);
-        } else {
-            setIsValidEmail(false);
-        }
-        setemail(val);
-    }
-
-    const handlePasswordChange = (val) => {
-        setPassword(val);
-    }
-
-    const handleNameChange = (val) => {
-        if (val.trim().length >= 4) {
-            setisValidUserName(true);
-        } else {
-            setisValidUserName(false);
-        }
-        setname(val);
-    }
-
-    const handlePhoneNumberChange = (val) => {
-        if (val.trim().length >= 10) {
-            setisValidPhoneNumber(true);
-        } else {
-            setisValidPhoneNumber(false);
-        }
-        setPhoneNumber(val);
-    }
-
-    const updateSecureTextEntry = () => {
-        setsecureTextEntry(!secureTextEntry);
-    }
-
-  
-  
-  
   const handleLogin = () => {
     setLoading(true);
-    const data = {
-      email: email,
-      password: password,
-    };
-    fetch(" http://localhost:3011", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          setLoading(false);
-          navigation.navigate("TabNav");
-        } else {
-          setLoading(false);
-          console.log(data);
-          
-          setError(data.message);
-        }
+    axios
+      .post("http://10.0.2.2:2020/auth/LogIN", {
+        email,
+        password,
+      })
+
+      .then(res => {
+        console.log("====================================");
+        console.log(
+          "🚀 ~ file: Register.tsx ~ line 64 ~ onSignUp ~ res",
+          res.data
+        );
+        console.log("====================================");
+        setLoading(false);
+
+        setLog(true);
+        setProfile(res.data.user);
+        AsyncStorage.setItem("token", res.data.token);
       })
       .catch(err => {
         setLoading(false);
-        setError(err.message);
-        console.log(err);
-        
+        console.log("====================================");
+        console.log(
+          "🚀 ~ file: Register.tsx ~ line 64 ~ onSignUp ~ err",
+          err.response
+        );
+        console.log("====================================");
       });
   };
 
- 
-
-
-
-        
-
-
   return (
-    <KeyboardAvoidingView behavior="height" style={styles.container}>
-      <View style={styles.container}>
-        <Animatable.View
-          style={styles.header}
-          animation="pulse"
-          iterationCount="infinite"
-          direction="alternate"
-        >
-          <ImageBackground
-            style={styles.background}
-            source={require("../../assets/vegetable4.jpg")}
-          ></ImageBackground>
-        </Animatable.View>
+    <>
+      {
+        // loding
 
-        <Animatable.View style={styles.footer} animation="fadeInUpBig">
+        loading ? <Splash /> :
+      
+      <KeyboardAvoidingView behavior="height" style={styles.container}>
+        <View style={styles.container}>
           <Animatable.View
+            style={styles.header}
             animation="pulse"
             iterationCount="infinite"
             direction="alternate"
           >
-            {error ? (
-              <Text
-                style={{
-                  color: "red",
-                  textAlign: "center",
-                  marginTop: 20,
-                  fontSize: 20,
-                }}
-              >
-                {error}
-              </Text>
-            ) : null}
+            <ImgRegister />
           </Animatable.View>
-          <Text style={styles.titleText}>Log in</Text>
 
-          <View style={[styles.action, {marginTop: 20}]}>
-            <Feather name="mail" color="#7e22ce" size={20} />
-            <TextInput
-              placeholder="Email"
-              style={styles.textInput}
-              onChangeText={text => setemail(text)}
-              value={email}
-              placeholderTextColor="#fff"
-            />
-          </View>
+          <Animatable.View style={styles.footer} animation="fadeInUpBig">
+            <Animatable.View
+              animation="pulse"
+              iterationCount="infinite"
+              direction="alternate"
+            >
+              {error ? (
+                <Text
+                  style={{
+                    color: "red",
+                    textAlign: "center",
+                    marginTop: 20,
+                    fontSize: 20,
+                  }}
+                >
+                  {error}
+                </Text>
+              ) : null}
+            </Animatable.View>
+            <Text style={styles.titleText}>Log in</Text>
 
-          <View style={[styles.action, {marginTop: 20}]}>
-            <FontAwesome name="lock" color="#7e22ce" size={20} />
+            <View style={[styles.action, {marginTop: 20}]}>
+              <Feather name="mail" color="#7e22ce" size={20} />
+              <TextInput
+                placeholder="Email"
+                style={styles.textInput}
+                onChangeText={text => setemail(text)}
+                value={email}
+                placeholderTextColor="#fff"
+              />
+            </View>
 
-            <TextInput
-              placeholder="Password"
-              secureTextEntry={true}
-              style={styles.textInput}
-              placeholderTextColor="#fff"
-              onChangeText={password => setPassword(password)}
-              value={password}
-            />
+            <View style={[styles.action, {marginTop: 20}]}>
+              <FontAwesome name="lock" color="#7e22ce" size={20} />
 
-            <Animatable.View animation="bounceIn">
-              <TouchableOpacity onPress={() => setPassword()}>
-                {secureTextEntry ? (
-                  <Feather name="eye-off" color="#fff" size={18} />
+              <TextInput
+                placeholder="Password"
+                secureTextEntry={true}
+                style={styles.textInput}
+                placeholderTextColor="#fff"
+                onChangeText={password => setPassword(password)}
+                value={password}
+              />
+
+              <Animatable.View animation="bounceIn">
+                <TouchableOpacity onPress={() => setPassword()}>
+                  {secureTextEntry ? (
+                    <Feather name="eye-off" color="#fff" size={18} />
+                  ) : (
+                    <Feather name="eye" color="#fff" size={18} />
+                  )}
+                </TouchableOpacity>
+              </Animatable.View>
+            </View>
+
+            <View style={styles.button}>
+              <TouchableOpacity
+                style={styles.button_signUp}
+                onPress={() => handleLogin()}
+              >
+                {loading ? (
+                  <ActivityIndicator size="small" color="#fff" />
                 ) : (
-                  <Feather name="eye" color="#fff" size={18} />
+                  <Text style={styles.btnTextSignUp}>Sign Up</Text>
                 )}
               </TouchableOpacity>
-            </Animatable.View>
-          </View>
-
-          <View style={styles.button}>
-            <TouchableOpacity
-              style={styles.button_signUp}
-              onPress={() => handleLogin()}
-            >
-              {loading ? (
-                <ActivityIndicator size="small" color="#fff" />
-              ) : (
-                <Text style={styles.btnTextSignUp}>Sign Up</Text>
-              )}
-            </TouchableOpacity>
-          </View>
-          <View>
-            <Text
-              style={{
-                color: "#fff",
-                textAlign: "center",
-                marginTop: 20,
-                fontSize: 16,
-              }}
-            >
-              not a member?
-            </Text>
-            <TouchableOpacity
-              
-              style={{
-                marginTop: 10,
-                backgroundColor: "#7e22ce",
-                padding: 10,
-                borderRadius: 10,
-                width: 150,
-                alignSelf: "center",
-              }}
-            >
-              <Text style={{color: "#fff", textAlign: "center", fontSize: 16}}>
-                Sign In
+            </View>
+            <View>
+              <Text
+                style={{
+                  color: "#fff",
+                  textAlign: "center",
+                  marginTop: 20,
+                  fontSize: 16,
+                }}
+              >
+                not a member?
               </Text>
-            </TouchableOpacity>
-          </View>
-        </Animatable.View>
-      </View>
-    </KeyboardAvoidingView>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Register")}
+                style={{
+                  marginTop: 10,
+                  backgroundColor: "#7e22ce",
+                  padding: 10,
+                  borderRadius: 10,
+                  width: 150,
+                  alignSelf: "center",
+                }}
+              >
+                <Text
+                  style={{color: "#fff", textAlign: "center", fontSize: 16}}
+                >
+                  Sign In
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </Animatable.View>
+        </View>
+          </KeyboardAvoidingView>
+      }
+    </>
   );
 };
 const image_width = Dimensions.get("window").width;
@@ -232,11 +193,13 @@ const image_height = Dimensions.get("window").height;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#000",
   },
   header: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#000",
   },
   footer: {
     flex: 1,

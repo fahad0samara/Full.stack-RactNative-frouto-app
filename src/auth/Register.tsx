@@ -15,9 +15,15 @@ import {
 
 import * as Animatable from "react-native-animatable";
 import { FontAwesome } from '@expo/vector-icons';
+import ImgRegister from "../configs/ImgRegister";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {StackActions} from "@react-navigation/native";
+import { useLogIN } from "../../ContText";
+import LoderApp from "../configs/LoderApp";
 
 
-const Sing = ({navigation}: any) => {
+const Sing = ({ navigation }: any) => {
+  const { setProfile } = useLogIN();
   const [email, setemail] = React.useState("");
   const [name, setname] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -29,33 +35,69 @@ const Sing = ({navigation}: any) => {
 
   const [secureTextEntry, setsecureTextEntry] = React.useState(false);
   // register for user
-  const onSignUp = () => {
+  const onSignUp = async () => {
+
     setLoading(true);
-    axios
-      .post("http://10.0.2.2:2020/auth/register", {
-        name: name,
-        email: email,
-        password: password,
-      })
-      .then(res => {
-        console.log("====================================");
-        console.log(
-          "🚀 ~ file: Register.tsx ~ line 64 ~ onSignUp ~ res",
-          res.data
-        );
-        console.log("====================================");
-        setLoading(false);
-        navigation.navigate("TabNav");
-      })
-      .catch(err => {
-        setLoading(false);
-        console.log("====================================");
-        console.log(
-          "🚀 ~ file: Register.tsx ~ line 64 ~ onSignUp ~ err",
-          err.response.data
-        );
- 
+    try {
+      const res = await axios.post("http://10.0.2.2:2020/auth/register", {
+        name,
+        email,
+        password,
       });
+      console.log('====================================');
+      console.log(
+        res.data
+      );
+
+      console.log('====================================');
+      setLoading(false);
+      const LOgIne = await axios.post("http://10.0.2.2:2020/auth/LogIN", {
+        email,
+        password,
+      });
+
+
+
+      
+
+      await AsyncStorage.setItem("token", LOgIne.data.token);
+       navigation.dispatch(
+         StackActions.replace("TabNav", {
+           token: LOgIne.data.token,
+         })
+      );  
+      
+
+      setProfile(LOgIne.data.user);
+
+      
+    
+      
+
+      console.log('====================================');
+      console.log(
+        LOgIne.data
+      );
+      console.log('====================================');
+
+
+
+        
+      
+   
+     
+
+        
+      
+    } catch (error) {
+      setLoading(false);
+  
+      console.log('====================================');
+      console.log(error.response.data); 
+      console.log('====================================');
+      
+    }
+    
   };
   
 
@@ -76,10 +118,7 @@ const Sing = ({navigation}: any) => {
           iterationCount="infinite"
           direction="alternate"
         >
-          <ImageBackground
-            style={styles.background}
-            source={require("../../assets/fruit4.jpg")}
-          ></ImageBackground>
+          <ImgRegister />
         </Animatable.View>
 
         <Animatable.View style={styles.footer} animation="fadeInUpBig">
@@ -225,7 +264,7 @@ const Sing = ({navigation}: any) => {
               onPress={() => navigation.navigate("LogIN")}
               style={{
                 marginTop: 10,
-                backgroundColor: "#EAB308",
+                backgroundColor: "#7e22ce",
                 padding: 10,
                 borderRadius: 10,
                 width: 150,
@@ -239,6 +278,13 @@ const Sing = ({navigation}: any) => {
           </View>
         </Animatable.View>
       </Animatable.View>
+      {
+        // loding
+
+        loading ? (
+          <LoderApp />
+        ) : null
+      }
     </KeyboardAvoidingView>
   );
 };
@@ -248,6 +294,7 @@ const image_height = Dimensions.get("window").height;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#000",
   },
   header: {
     flex: 1,
@@ -280,20 +327,20 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: 10,
     borderBottomWidth: 1,
-    borderBottomColor: "#EAB308",
+    borderBottomColor: "#7e22ce",
     paddingBottom: 5,
   },
   textInput: {
     flex: 1,
     paddingLeft: 10,
-    color: "#EAB308",
+    color: "#7e22ce",
   },
   button: {
     alignItems: "center",
     marginTop: 30,
   },
   button_signUp: {
-    backgroundColor: "#EAB308",
+    backgroundColor: "#7e22ce",
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 50,

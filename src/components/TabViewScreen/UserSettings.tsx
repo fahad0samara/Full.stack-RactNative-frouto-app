@@ -10,9 +10,35 @@ import React, {useState} from "react";
 import {AntDesign} from "@expo/vector-icons";
 import {LogBox} from "react-native";
 import Toast from "react-native-simple-toast";
+import { useLogIN } from "../../../ContText";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const UserSettings = () => {
+  const { setLog, setProfile } = useLogIN();
+  // log out
+  const onLogout = () => {
+    //http://10.0.2.2:2020/auth/logout
+    axios.get("http://10.0.2.2:2020/auth/logout", {
+        headers: {
+          Authorization: `JWT  ${AsyncStorage.getItem("token")}`,
+        },
+      })
+      .then(res => {
+        console.log("====================================");
+        console.log(
+          "🚀 ~ file: UserSettings.tsx ~ line 64 ~ onLogout ~ res",
+          res.data.message
+        );
+        console.log("====================================");
+
+        setLog(false);
+        setProfile(false);
+        Toast.show("Log Out");
+      });
+  };
   const [isEnabled, setIsEnabled] = useState(false);
   const [isEnabled2, setIsEnabled2] = useState(false);
+
 
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   const toggleSwitch2 = () => setIsEnabled2(previousState => !previousState);
@@ -317,9 +343,11 @@ const UserSettings = () => {
           </Text>
         </View>
         <TouchableOpacity
+          // logout
           onPress={() => {
-            Toast.show("Log Out");
+            onLogout()
           }}
+      
           style={{
             flexDirection: "row",
             backgroundColor: "#7e22ce",
