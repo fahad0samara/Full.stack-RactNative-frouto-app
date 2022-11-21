@@ -1,8 +1,8 @@
 
 import { View, Text, SafeAreaView, Dimensions, Image } from 'react-native'
 import React from 'react'
-import TabViewExample from '../components/TabViewScreen/TabViewExample';
-import { useLogIN } from '../../ContText';
+import TabViewExample from './TabViewExample';
+import { useLogIN } from '../../../ContText';
 
 const Settings = () => {
   const {profile} = useLogIN();
@@ -38,8 +38,10 @@ const Settings = () => {
             marginTop: height / 6,
           }}
         >
-          {/* <Image
-            source={require("../../assets/fruit6.jpg")}
+          <Image
+            source={{
+              uri: profile.image.url,
+            }}
             style={{
               width: 100,
               height: 100,
@@ -49,10 +51,7 @@ const Settings = () => {
               borderColor: "#fff",
             }}
             resizeMode="contain"
-          /> */}
-          {
-            // name profile
-          }
+          />
           <Text
             style={{
               color: "#fff",
@@ -78,7 +77,6 @@ const Settings = () => {
           {
             // phone profile
           }
-          
         </View>
       </View>
 

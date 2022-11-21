@@ -9,7 +9,7 @@ import HomeScreen from "../screens/HomeScreen";
 import CartScreen from "../screens/CartScreen";
 
 import {useLogIN} from "../../ContText";
-import Settings from "../screens/Settings";
+import Settings from "../components/TabViewScreen/Settings";
 
 const BottomTab = ({type, color, size = 24, isFocused, index}) => {
   const {products} = useLogIN();

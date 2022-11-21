@@ -28,11 +28,19 @@ const AppHeader = () => {
   return (
     <SafeAreaView>
       <View style={styles.container}>
-        {/* <Image
-          // her the image the come from the backend
-          source={require("../../assets/fruit1.jpg")}
-          style={styles.avatar}
-        /> */}
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Settings");
+          }}
+        >
+          <Image
+            // her the image the come from the backend
+            source={{
+              uri: profile.image.url,
+            }}
+            style={styles.avatar}
+          />
+        </TouchableOpacity>
 
         <View style={styles.groupText}>
           <Text>
@@ -61,6 +69,50 @@ const AppHeader = () => {
               </Text>
             </Text>
           </Text>
+          {
+            // notification
+          }
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Notification")}
+            style={{
+              position: "absolute",
+              right: 0,
+              top: 0,
+              width: 40,
+              height: 40,
+              borderRadius: 20,
+              backgroundColor: "#fff",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <AntDesign name="bells" size={24} color="black" />
+          </TouchableOpacity>
+
+          {
+            // the number of the Notification
+          }
+          <View
+            style={{
+              position: "absolute",
+              right: 0,
+              top: 0,
+              width: 20,
+              height: 20,
+              borderRadius: 10,
+              backgroundColor: "red",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text style={{color: "#000", fontSize: 12}}>
+              {
+                // the number of the Notification
+              }
+              {products.length}
+            </Text>
+          </View>
+
           <Text style={styles.desc}>What would you buy today?</Text>
         </View>
       </View>
@@ -90,6 +142,10 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
+    borderColor: '#fff',
+    borderWidth: 2,
+
+
   },
 
 });

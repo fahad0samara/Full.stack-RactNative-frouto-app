@@ -54,7 +54,7 @@ const Sing = ({navigation}: any) => {
 
       await AsyncStorage.setItem("token", LOgIne.data.token);
       navigation.dispatch(
-        StackActions.replace("TabNav", {
+        StackActions.replace("UploadImage", {
           token: LOgIne.data.token,
         })
       );
