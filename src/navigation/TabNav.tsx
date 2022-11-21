@@ -1,6 +1,6 @@
 import React from "react";
 import {StyleSheet, View, TouchableOpacity} from "react-native";
-import {NavigationContainer} from "@react-navigation/native";
+import {getFocusedRouteNameFromRoute, NavigationContainer} from "@react-navigation/native";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {FontAwesome} from "@expo/vector-icons";
 import {Image, ScrollView, Text} from "react-native";
@@ -137,8 +137,13 @@ const MyTabBar = ({state, descriptors, navigation}) => {
 
 const Tab = createBottomTabNavigator();
 
-const TabNavigator = () => {
-  //  products.length > 0 ? products.length : null
+const TabNavigator = ({route,navigation}) => {
+ 
+  
+      
+    
+  
+
 
   return (
     <Tab.Navigator
@@ -178,8 +183,9 @@ const TabNavigator = () => {
   );
 };
 
-const TabNav = () => {
+const TabNav = ({}) => {
   return <TabNavigator />;
+
 };
 
 const styles = StyleSheet.create({

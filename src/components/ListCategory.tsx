@@ -10,7 +10,7 @@ import React from 'react';
 const ListCategory = ({categories = [], onChange, currentType}:any) => {
   return (
     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-      {categories.map(category => (
+      {categories.map((category: { id: React.Key | null | undefined; image: any; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }) => (
         <TouchableOpacity
           key={category.id}
           style={[

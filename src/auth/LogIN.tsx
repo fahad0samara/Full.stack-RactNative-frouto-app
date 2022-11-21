@@ -4,7 +4,6 @@ import {
   StyleSheet,
   Dimensions,
   View,
-  ImageBackground,
   Text,
   TouchableOpacity,
   TextInput,
@@ -12,14 +11,14 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {StackActions} from "@react-navigation/native";
+
 import * as Animatable from "react-native-animatable";
-import {LinearGradient} from "expo-linear-gradient";
+
 import {FontAwesome, Feather} from "@expo/vector-icons";
 import {useNavigation} from "@react-navigation/native";
 import ImgRegister from "../configs/ImgRegister";
 import {useLogIN} from "../../ContText";
-import LoderApp from "../configs/LoderApp";
+
 import Splash from "../configs/Splash";
 
 const LogIN = ({}) => {
@@ -43,26 +42,20 @@ const LogIN = ({}) => {
       })
 
       .then(res => {
-        console.log("====================================");
-        console.log(
-          "🚀 ~ file: Register.tsx ~ line 64 ~ onSignUp ~ res",
-          res.data
-        );
-        console.log("====================================");
         setLoading(false);
 
-        setLog(true);
+     
         setProfile(res.data.user);
         AsyncStorage.setItem("token", res.data.token);
+        setLog(true);
+        console.log("🚀line 70 ", res.data.user);
       })
       .catch(err => {
+        setError(err.response.data);
         setLoading(false);
-        console.log("====================================");
-        console.log(
-          "🚀 ~ file: Register.tsx ~ line 64 ~ onSignUp ~ err",
-          err.response
-        );
-        console.log("====================================");
+
+        console.log("🚀line 62 ", err.response.data);
+        console.log("🚀line 62 ", err.response.data.error);
       });
   };
 
@@ -71,118 +64,122 @@ const LogIN = ({}) => {
       {
         // loding
 
-        loading ? <Splash /> :
-      
-      <KeyboardAvoidingView behavior="height" style={styles.container}>
-        <View style={styles.container}>
-          <Animatable.View
-            style={styles.header}
-            animation="pulse"
-            iterationCount="infinite"
-            direction="alternate"
-          >
-            <ImgRegister />
-          </Animatable.View>
+        loading ? (
+          <Splash />
+        ) : (
+          <KeyboardAvoidingView behavior="height" style={styles.container}>
+            <View style={styles.container}>
+              <Animatable.View
+                style={styles.header}
+                animation="pulse"
+                iterationCount="infinite"
+                direction="alternate"
+              >
+                <ImgRegister />
+              </Animatable.View>
 
-          <Animatable.View style={styles.footer} animation="fadeInUpBig">
-            <Animatable.View
-              animation="pulse"
-              iterationCount="infinite"
-              direction="alternate"
-            >
-              {error ? (
-                <Text
-                  style={{
-                    color: "red",
-                    textAlign: "center",
-                    marginTop: 20,
-                    fontSize: 20,
-                  }}
+              <Animatable.View style={styles.footer} animation="fadeInUpBig">
+                <Animatable.View
+                  animation="pulse"
+                  iterationCount="infinite"
+                  direction="alternate"
                 >
-                  {error}
-                </Text>
-              ) : null}
-            </Animatable.View>
-            <Text style={styles.titleText}>Log in</Text>
+                  {error ? (
+                    <Text
+                      style={{
+                        color: "red",
+                        textAlign: "center",
+                        marginTop: 20,
+                        fontSize: 20,
+                      }}
+                    >
+                      {error}
+                    </Text>
+                  ) : null}
+                </Animatable.View>
+                <Text style={styles.titleText}>Log in</Text>
 
-            <View style={[styles.action, {marginTop: 20}]}>
-              <Feather name="mail" color="#7e22ce" size={20} />
-              <TextInput
-                placeholder="Email"
-                style={styles.textInput}
-                onChangeText={text => setemail(text)}
-                value={email}
-                placeholderTextColor="#fff"
-              />
-            </View>
+                <View style={[styles.action, {marginTop: 20}]}>
+                  <Feather name="mail" color="#EAB308" size={20} />
+                  <TextInput
+                    placeholder="Email"
+                    style={styles.textInput}
+                    onChangeText={text => setemail(text)}
+                    value={email}
+                    placeholderTextColor="#fff"
+                  />
+                </View>
 
-            <View style={[styles.action, {marginTop: 20}]}>
-              <FontAwesome name="lock" color="#7e22ce" size={20} />
+                <View style={[styles.action, {marginTop: 20}]}>
+                  <FontAwesome name="lock" color="#EAB308" size={20} />
 
-              <TextInput
-                placeholder="Password"
-                secureTextEntry={true}
-                style={styles.textInput}
-                placeholderTextColor="#fff"
-                onChangeText={password => setPassword(password)}
-                value={password}
-              />
+                  <TextInput
+                    placeholder="Password"
+                    style={styles.textInput}
+                    placeholderTextColor="#fff"
+                    onChangeText={password => setPassword(password)}
+                    value={password}
+                    secureTextEntry={secureTextEntry ? true : false}
+                  />
 
-              <Animatable.View animation="bounceIn">
-                <TouchableOpacity onPress={() => setPassword()}>
-                  {secureTextEntry ? (
-                    <Feather name="eye-off" color="#fff" size={18} />
-                  ) : (
-                    <Feather name="eye" color="#fff" size={18} />
-                  )}
-                </TouchableOpacity>
+                  <Animatable.View animation="bounceIn">
+                    <TouchableOpacity
+                      onPress={() => setsecureTextEntry(!secureTextEntry)}
+                    >
+                      {secureTextEntry ? (
+                        <Feather name="eye-off" color="grey" size={20} />
+                      ) : (
+                        <Feather name="eye" color="white" size={20} />
+                      )}
+                    </TouchableOpacity>
+                  </Animatable.View>
+                </View>
+
+                <View style={styles.button}>
+                  <TouchableOpacity
+                    style={styles.button_signUp}
+                    onPress={() => handleLogin()}
+                  >
+                    {loading ? (
+                      <ActivityIndicator size="small" color="#fff" />
+                    ) : (
+                      <Text style={styles.btnTextSignUp}>Sign Up</Text>
+                    )}
+                  </TouchableOpacity>
+                </View>
+                <View>
+                  <Text
+                    style={{
+                      color: "#fff",
+                      textAlign: "center",
+                      marginTop: 20,
+                      fontSize: 16,
+                    }}
+                  >
+                    not a member?
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate("Register")}
+                    style={{
+                      marginTop: 10,
+                      backgroundColor: "#7e22ce",
+                      padding: 10,
+                      borderRadius: 10,
+                      width: 150,
+                      alignSelf: "center",
+                    }}
+                  >
+                    <Text
+                      style={{color: "#fff", textAlign: "center", fontSize: 16}}
+                    >
+                      Sign In
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </Animatable.View>
             </View>
-
-            <View style={styles.button}>
-              <TouchableOpacity
-                style={styles.button_signUp}
-                onPress={() => handleLogin()}
-              >
-                {loading ? (
-                  <ActivityIndicator size="small" color="#fff" />
-                ) : (
-                  <Text style={styles.btnTextSignUp}>Sign Up</Text>
-                )}
-              </TouchableOpacity>
-            </View>
-            <View>
-              <Text
-                style={{
-                  color: "#fff",
-                  textAlign: "center",
-                  marginTop: 20,
-                  fontSize: 16,
-                }}
-              >
-                not a member?
-              </Text>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("Register")}
-                style={{
-                  marginTop: 10,
-                  backgroundColor: "#7e22ce",
-                  padding: 10,
-                  borderRadius: 10,
-                  width: 150,
-                  alignSelf: "center",
-                }}
-              >
-                <Text
-                  style={{color: "#fff", textAlign: "center", fontSize: 16}}
-                >
-                  Sign In
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </Animatable.View>
-        </View>
           </KeyboardAvoidingView>
+        )
       }
     </>
   );
@@ -233,7 +230,7 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
     paddingLeft: 10,
-    color: "#7e22ce",
+    color: "#ffff",
   },
   button: {
     alignItems: "center",

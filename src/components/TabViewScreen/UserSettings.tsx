@@ -10,35 +10,42 @@ import React, {useState} from "react";
 import {AntDesign} from "@expo/vector-icons";
 import {LogBox} from "react-native";
 import Toast from "react-native-simple-toast";
-import { useLogIN } from "../../../ContText";
+import {useLogIN} from "../../../ContText";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const UserSettings = () => {
-  const { setLog, setProfile } = useLogIN();
+  const {setLog, setProfile, setLoading} = useLogIN();
   // log out
-  const onLogout = () => {
-    //http://10.0.2.2:2020/auth/logout
-    axios.get("http://10.0.2.2:2020/auth/logout", {
-        headers: {
-          Authorization: `JWT  ${AsyncStorage.getItem("token")}`,
-        },
-      })
-      .then(res => {
-        console.log("====================================");
-        console.log(
-          "🚀 ~ file: UserSettings.tsx ~ line 64 ~ onLogout ~ res",
-          res.data.message
-        );
-        console.log("====================================");
+   const logout = async () => {
+     setLoading(true);
+     try {
+       const response = await axios.get("http://10.0.2.2:2020/auth/logout", {
+         headers: {
+           Authorization: `Jwt ${await AsyncStorage.getItem("token")}`,
+         },
+       });
 
-        setLog(false);
-        setProfile(false);
-        Toast.show("Log Out");
-      });
-  };
+       await AsyncStorage.removeItem("token");
+       setLoading(false);
+       setLog(false);
+        setProfile({});
+        Toast.show("Log out successfully");
+     } catch (error) {
+       setLoading(false);
+       console.log(
+         error.response.data.message || "Something went wrong, try again"
+         
+       );
+       
+
+   
+    
+
+     }
+   };
+
   const [isEnabled, setIsEnabled] = useState(false);
   const [isEnabled2, setIsEnabled2] = useState(false);
-
 
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   const toggleSwitch2 = () => setIsEnabled2(previousState => !previousState);
@@ -344,10 +351,7 @@ const UserSettings = () => {
         </View>
         <TouchableOpacity
           // logout
-          onPress={() => {
-            onLogout()
-          }}
-      
+          onPress={() => logout()}
           style={{
             flexDirection: "row",
             backgroundColor: "#7e22ce",

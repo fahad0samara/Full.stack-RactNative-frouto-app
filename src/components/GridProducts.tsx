@@ -8,7 +8,7 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useLogIN} from "../../ContText";
 import {AntDesign} from "@expo/vector-icons";
 import {LogBox} from "react-native";
@@ -96,7 +96,9 @@ const ProductItem = (props: {
 };
 
 const GridProducts = ({products = []}) => {
-  LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
+ useEffect(() => {
+   LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
+ }, []);
   const renderItem = ({item, index}: any) => (
     <ProductItem index={index} {...item} />
   );

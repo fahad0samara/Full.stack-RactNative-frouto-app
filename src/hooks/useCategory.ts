@@ -8,9 +8,6 @@ export const useCategory = () => {
       const resp = await fetch('http://10.0.2.2:2020/api/category');
       const data = await resp.json();
       setCategoryList(data);
-      console.log('====================================');
-      console.log(data);
-      console.log('====================================');
     })();
   }, []);
 

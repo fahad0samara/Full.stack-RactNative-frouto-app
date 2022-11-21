@@ -1,5 +1,5 @@
 import React from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import axios from "axios";
 import {
   StyleSheet,
@@ -14,16 +14,15 @@ import {
 } from "react-native";
 
 import * as Animatable from "react-native-animatable";
-import { FontAwesome } from '@expo/vector-icons';
+import {FontAwesome} from "@expo/vector-icons";
 import ImgRegister from "../configs/ImgRegister";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {StackActions} from "@react-navigation/native";
-import { useLogIN } from "../../ContText";
+import {useLogIN} from "../../ContText";
 import LoderApp from "../configs/LoderApp";
 
-
-const Sing = ({ navigation }: any) => {
-  const { setProfile } = useLogIN();
+const Sing = ({navigation}: any) => {
+  const {setProfile} = useLogIN();
   const [email, setemail] = React.useState("");
   const [name, setname] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -36,7 +35,6 @@ const Sing = ({ navigation }: any) => {
   const [secureTextEntry, setsecureTextEntry] = React.useState(false);
   // register for user
   const onSignUp = async () => {
-
     setLoading(true);
     try {
       const res = await axios.post("http://10.0.2.2:2020/auth/register", {
@@ -44,70 +42,37 @@ const Sing = ({ navigation }: any) => {
         email,
         password,
       });
-      console.log('====================================');
-      console.log(
-        res.data
-      );
+     
+   
+      setError("");
 
-      console.log('====================================');
       setLoading(false);
       const LOgIne = await axios.post("http://10.0.2.2:2020/auth/LogIN", {
         email,
         password,
       });
 
-
-
-      
-
       await AsyncStorage.setItem("token", LOgIne.data.token);
-       navigation.dispatch(
-         StackActions.replace("TabNav", {
-           token: LOgIne.data.token,
-         })
-      );  
-      
-
-      setProfile(LOgIne.data.user);
-
-      
-    
-      
-
-      console.log('====================================');
-      console.log(
-        LOgIne.data
+      navigation.dispatch(
+        StackActions.replace("TabNav", {
+          token: LOgIne.data.token,
+        })
       );
-      console.log('====================================');
 
 
 
-        
-      
-   
-     
-
-        
-      
+    
     } catch (error) {
       setLoading(false);
-  
-      console.log('====================================');
-      console.log(error.response.data); 
-      console.log('====================================');
+      setError(error.response.data);
+      console.log(
+        "🚀 ~ file: Register.tsx ~ line 64 ~ onSignUp ~ error",
+        error.response.data
+      );
       
+   
     }
-    
   };
-  
-
-
-
-  
-
- 
-
-
 
   return (
     <KeyboardAvoidingView behavior="height" style={styles.container}>
@@ -232,7 +197,7 @@ const Sing = ({ navigation }: any) => {
               {secureTextEntry ? (
                 <FontAwesome name="eye-slash" color="grey" size={20} />
               ) : (
-                <FontAwesome name="eye" color="grey" size={20} />
+                <FontAwesome name="eye" color="white" size={20} />
               )}
             </TouchableOpacity>
           </View>
@@ -281,9 +246,7 @@ const Sing = ({ navigation }: any) => {
       {
         // loding
 
-        loading ? (
-          <LoderApp />
-        ) : null
+        loading ? <LoderApp /> : null
       }
     </KeyboardAvoidingView>
   );
@@ -333,7 +296,7 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
     paddingLeft: 10,
-    color: "#7e22ce",
+    color: "#fff",
   },
   button: {
     alignItems: "center",

@@ -1,17 +1,21 @@
 import {
   FlatList,
   Image,
+  LogBox,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useLogIN } from "../../ContText";
 import {AntDesign} from "@expo/vector-icons";
 
 const ListProductOrder = ({products = []}:any) => {
   const { addProductToCard, removeProduct } = useLogIN();
+   useEffect(() => {
+     LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
+   }, []);
   
   const renderItem = ({item}:any) => {
     return (
